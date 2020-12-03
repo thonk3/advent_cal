@@ -16,3 +16,25 @@ report.forEach(first => {
 
 console.log(a,b);
 console.log(a*b)
+
+
+// part 2 is 3 inputs
+
+// aight this code works but its trash
+a = 0, b = 0;
+let c = 0;
+
+// BAD AND SLOW
+report.forEach(first => {
+    report.forEach(sec => {
+        if ( first + sec >= 2020) return;       // some what to speed this up
+        report.forEach(third => {
+            if(first + sec + third === 2020) {
+                a = first; b = sec; c = third;
+            }
+        })
+    })
+})
+
+console.log(a, b, c);
+console.log(a*b*c);
