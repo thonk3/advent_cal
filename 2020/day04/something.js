@@ -1,4 +1,3 @@
-const { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } = require('constants');
 const fs = require('fs');
 
 var input = []
