@@ -1,5 +1,4 @@
 
-const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants');
 const fs = require('fs');
 
 var input = []
@@ -79,11 +78,12 @@ fs.readFile(FILE, 'utf-8', (err, data) => {
 
     // console.log(alpha);
 
-
-
-
-
-
-
 });
+
+
+
+/* 
+    lr
+    bw
+*/
 
