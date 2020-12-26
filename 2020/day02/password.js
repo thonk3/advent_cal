@@ -1,6 +1,5 @@
 const FILE = './input';
 const fileImport = require('../FileImport').default(FILE);
-const fs = require('fs');
 
 const parsedInput = fileImport.parse(line => {
     let parts = line.split(" ");

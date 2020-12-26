@@ -1,7 +1,13 @@
-const fs = require('fs');
-
-var input = []
 const FILE = './input';
+const fileImport = require('../FileImport').default(FILE);
+
+const input = fileImport.read();
+
+// part 1
+
+// part 2
+/* 
+var input = []
 fs.readFile(FILE, 'utf-8', (err, data) => {
     // split each line
     // console.log(object)
@@ -55,3 +61,4 @@ fs.readFile(FILE, 'utf-8', (err, data) => {
 })
 
 
+ */
