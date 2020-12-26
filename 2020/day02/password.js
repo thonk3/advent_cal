@@ -1,14 +1,39 @@
-const fs = require('fs');
-// const readline = require('readline').createInterface({
-//     input: fs.createReadStream('./input')
-// });
-// let input = []; 
-var input = []
 const FILE = './input';
+const fileImport = require('../FileImport').default(FILE);
+const fs = require('fs');
+
+const parsedInput = fileImport.parse(line => {
+    let parts = line.split(" ");
+
+    return {
+        min: parseInt(parts[0].split("-")[0]),
+        max: parseInt(parts[0].split("-")[1]),
+        char: parts[1][0],
+        check: parts[2]
+    }
+})
+
+    let valid = 0;
+
+    let maxVal = 0;
+    let minVal = 0;
+    // ======================================================================
+    // solution part 1
+    input.forEach(pass => {
+        let len = [...pass.check].filter(char => char === pass.char).length;
+
+        if(len <= pass.max && len >= pass.min) valid++;
+    })
+
+    console.log(valid);
+
+/*
+
+var input = []
 fs.readFile(FILE, 'utf-8', (err, data) => {
     input = data.split("\n").map(line => {
         let parts = line.split(" ");
-        
+
         return {
             min: parseInt(parts[0].split("-")[0]),
             max: parseInt(parts[0].split("-")[1]),
@@ -54,3 +79,5 @@ fs.readFile(FILE, 'utf-8', (err, data) => {
 
 // console.log(input[0]);
 console.log(input)
+
+*/
