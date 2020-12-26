@@ -1,6 +1,8 @@
 
 const fs = require('fs');
 
+/* this be a directed graph problem */
+
 const FILE = './input';
 let input = require("fs").readFileSync(FILE, "utf8").split("\n").map(i => i.slice(0, i.length-1));
 
