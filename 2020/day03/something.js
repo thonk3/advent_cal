@@ -1,9 +1,26 @@
 const FILE = './input';
 const fileImport = require('../FileImport').default(FILE);
 
-const input = fileImport.read();
+const input = fileImport.read().map(i => i.repeat(33));
 
+console.log(input)
 // part 1
+    // let valid = 0;
+    // let r = 0
+    // // ======================================================================
+    // for(let down = 0; down < input.length; down+=2) {
+    //     let line = [...input[down].toString()];
+
+    //     if(line[r%line.length] === '#') valid++;
+        
+    //     console.log(down, r%line.length)
+
+    //     r+=2;}
+
+    //     console.log(valid);
+    // 41
+    
+
 
 // part 2
 /* 
