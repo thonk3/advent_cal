@@ -2,9 +2,6 @@ const FILE = './report_input';
 const fileImport = require('../FileImport').default(FILE);
 
 /* day 1: simple maths problem */
-
-// console.log(fileImport.read(FILE));
-
 let report = fileImport.parse(n => parseInt(n));
 console.log(report); console.log();
 
@@ -13,7 +10,6 @@ let part1 = [0, 0];
 let part2 = [0, 0, 0];
 
 // find 2 number add to 2020 and find the multiplication
-
 report.forEach(first => {
     report.forEach(sec => {
         if (first + sec == 2020) { // part1 solution
