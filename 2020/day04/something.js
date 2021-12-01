@@ -7,15 +7,15 @@ let input = fi.read();
 let list = [], pass = {};
 
 // generating objects
-while (input.length != 0) {
+while (input.length != 0) { // for each line
     let line = input.shift().split(" ");
 
     // done with object
-    if (line[0] === "") {
+    if (line[0] === "") {   // if new line then add passport object / start new object
         list.push(pass);
         pass = {};
     } else {
-        line.forEach(phrase => {
+        line.forEach(phrase => { // if line has text, give passobject key/value 
             let key = phrase.split(":")[0],
                 val = phrase.split(":")[1];
             pass = { ...pass, [key]: val, }
