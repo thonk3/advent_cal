@@ -30,28 +30,13 @@ console.log(fileImport.read())
 
 
 // part 2
-// let c = 0 
-// let a = 0
-// for(let i = 1; i < parsedInput.length; i++) {
-//     console.log("---")
-//     console.log(`index ${i} with ${i-1}`)
-
-//     if(parsedInput[i] > parsedInput[i-1]) c++
-//     a++
-
-//     console.log(`index ${parsedInput[i]} with ${parsedInput[i-1]}, ${c}`)
-// }
-// console.log(c, a)
-// console.log(parsedInput.length)
-// fucking + 1
-
 // create sliding window
-// let slide = []
-// for(let i = 0; i < parsedInput.length - 2; i++) {
-//     slide.push(parsedInput[i] + parsedInput[i+1] + parsedInput[i+2]) 
-// }
+let slide = []
+for(let i = 0; i < parsedInput.length - 2; i++) {
+    slide.push(parsedInput[i] + parsedInput[i+1] + parsedInput[i+2]) 
+}
 
-// console.log(slide[1997])
+console.log(slide[1997])
 
 let c = 0, a = 0;
 for(let i = 1; i < slide.length; i++) {
