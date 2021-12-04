@@ -207,8 +207,6 @@ for(let i =0; i < strLen;i++) {
 
     let cc0 = o2list.length-cc1
 
-    // console.log(cc1, cc0)
-
     o2list = o2list.filter(e => {
         if(cc1 == cc0) return e[i] == 1
 
