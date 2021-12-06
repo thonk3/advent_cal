@@ -64,22 +64,13 @@ input.forEach(e=> {
         let lgX = e.from.x > e.to.x ? e.from.x : e.to.x
         let smY = e.from.y < e.to.y ? e.from.y : e.to.y
         let lgY = e.from.y > e.to.y ? e.from.y : e.to.y
+
+        
         if(rise/run === 1) {
-            console.log("up", smX, smY, "and", lgX, lgY )
             for(let x=smX, y = smY; x<=lgX, y<=lgY; x++, y++) seaMap[x][y]++
         }
         if(rise/run === -1) {
-
-            console.log("down", e.from.x, e.from.y, "to", e.to.x, e.to.y)
-            let ll = "-----------"
-            for(let x=smX, y = lgY; x<=lgX, y>=smY; x++, y--) {
-                // console.log("val", x,y)
-                // console.log("chk", lgX,lgY)
-                // console.log("nxt", x+1,y-1)
-                seaMap[x][y]++
-            }
-            console.log(ll)
-            // for(let x=smX, y = smY; x>=lgX, y>=lgY; x--, y--) seaMap[x][y]++
+            for(let x=smX, y = lgY; x<=lgX, y>=smY; x++, y--) seaMap[x][y]++
         }
         
 
@@ -88,7 +79,7 @@ input.forEach(e=> {
         // console.log(smX, smY, 'to', lgX, lgY)
 
         // for(let x=smX, y = smY; x<=lgX, y<=lgY; x++, y++) seaMap[x][y]++
-    }
+    // }
 })
 
 // count more than 2 points assign to a1
@@ -98,14 +89,14 @@ for(let x = 0; x<dim; x++) {
     }
 }
 
-// DRAW
-// for(let x = 0; x<dim; x++) {
-//     let line = ""
-//     for(let y = 0; y<dim;y++) {
-//         line += seaMap[y][x] + " "
-//     }
-//     console.log(line)
-// }
+// PRINT
+for(let x = 0; x<dim; x++) {
+    let line = ""
+    for(let y = 0; y<dim;y++) {
+        line += seaMap[y][x] + " "
+    }
+    console.log(line)
+}
 
 
 
