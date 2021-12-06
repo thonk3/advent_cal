@@ -1,0 +1,2 @@
+language = "nodejs"
+run = "node 2021/06/yes.js"
