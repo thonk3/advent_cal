@@ -2,128 +2,88 @@ const FILEDIR = require('path').resolve(__dirname,'./input')
 const DEMO = require('path').resolve(__dirname,'./demo')
 
 // pass the path of the input file
-const fileReader = require('../FileImport')(FILEDIR);
+const fileReader = require('../FileImport')(DEMO);
 
 // get input as an array of string
 // seperated by new line
 let input = fileReader();
+const MAX_G = 10;
 
-input = input.map(e => e.split('').map(ee => Number(ee)));
 
-// theoretically 25
-let count = 0;
-const WIDE = input.length;
-const DEEP = input[1].length;
-
-const checkVisible = (x,y) => {
-    let target = input[x][y]; //?
-    let arr = [];
-
-    // from left
-    for(let i = 0; i <y; i++) {
-        arr.push(input[x][i])
+input = input.map(e=>{
+    let ll = e.split(' ');
+    return {
+        dir: ll[0],
+        pos: Number(ll[1])
     }
-    if(arr.every(e => e < target)) return true
-    
-    // from right
-    arr = [];
-    for(let i = y+1; i <WIDE; i++){
-        arr.push(input[x][i])
-    }
-    if(arr.every(e => e < target)) return true
+})
 
-    // from top
-    let vertArr = [];
-    for(let i = 0; i < DEEP; i++) {
-        vertArr.push(input[i][y]);
-    }
-    vertArr
-    arr = vertArr.slice(0,x);
-    if(arr.every(e => e < target)) return true
-
-    // from bottom
-    arr = vertArr.slice(x+1, DEEP)
-    if(arr.every(e => e < target)) return true
-
-    return false
+let grid = [];
+let visited = [];
+for(let i = 0; i< MAX_G;i++) {
+    let gridLine = new Array(MAX_G).fill('.');
+    grid.push(gridLine);
 }
+
+
+const debugGrid = () => {
+    grid.forEach(e => console.log(e.join('')));
+}
+const drawTail = (dir, prev) => {
+    let x = HeadPoint.x - TailPoint.x;
+    let y = HeadPoint.y - TailPoint.y;
+
+    console.log(x,y)
+    if(Math.abs(x) !== 1 && Math.abs(y) !== 1) {
+        TailPoint = {...prev};
+        grid[TailPoint.x][TailPoint.y] = 'T'
+    }
+}
+
 /* 
-    1,1 The top-left 5 is visible from the left and top. (It isn't visible from the right or bottom since other trees of height 5 are in the way.)
-    1,2 The top-middle 5 is visible from the top and right.
-    2,1 The left-middle 5 is visible, but only from the right.
-    2,3 The right-middle 3 is visible from the right.
-    3,2 In the bottom row, the middle 5 is visible, but the 3 and 4 are not.
-
+    only moved head
 */
-checkVisible(2,3); //?
+const move = (dir, pos) => {
+    let current = {...HeadPoint}
 
-for(let i = 1; i < WIDE-1; i++) {
-    for(let ii = 1; ii < DEEP-1; ii++) {
-        if(checkVisible(i,ii)) count++;
+    switch(dir){
+        case 'R':
+            HeadPoint.y++; ; break;
+        case 'L':
+            HeadPoint.y--; ; break;
+        case 'U':
+            HeadPoint.x--; ; break;
+        case 'D':
+            HeadPoint.x++ ; break;
     }
+
+    grid[HeadPoint.x][HeadPoint.y] = 'H';
+    drawTail(dir, current);
+    // maybe remove this later
+    // grid[current.x][current.y] = '.';
+
+    // debugGrid();
+    // console.log();
+
+    if(pos!=1) return move(dir, pos-1);
 }
 
-count += DEEP+DEEP+WIDE-2+WIDE-2
+// starting point is 4,4 the mid point
+let HeadPoint = {x:4, y:4};
+let TailPoint = {x:4, y:4};
 
-console.log(count)
+grid[4][4] = 'H'
 
-// Part 2
-let scoreList = [];
+/* 
+e.dir e.pos
+ */
 
-const countTrees = (target, treesFrom) => {
-    let count = 0;
-    for(let i = 0; i < treesFrom.length; i++) {
-        count++;
-        if(treesFrom[i] >= target) break;
-    }
+// move('R', 2)
 
-    return count;
-}
+input.forEach(e => {
+    console.log('step', e.dir, e.pos)
+    move(e.dir, e.pos);
+    // debugGrid();
+})
 
-const getScore = (x, y) => {
-    let score = 1;
-    let target = input[x][y]; //?
-    let arr = [];
-    ;
-    // from left
-    for(let i = 0; i <y; i++) {
-        arr.push(input[x][i])
-    }
-    arr.reverse();
-    score *= countTrees(target, arr) //?
-
-
-    // from right
-    arr = [];
-    for(let i = y+1; i <WIDE; i++){
-        arr.push(input[x][i])
-    }
-    arr//
-    score *= countTrees(target, arr) //?
-
-    // from top
-    let vertArr = [];
-    for(let i = 0; i < DEEP; i++) {
-        vertArr.push(input[i][y]);
-    }
-    arr = vertArr.slice(0,x);
-    arr
-    score *= countTrees(target, arr.reverse()) // ?
-
-    // from bottom
-    arr = vertArr.slice(x+1, DEEP)
-    score *= countTrees(target, arr) 
-
-    return score;
-}
-
-getScore(2,1) //?
-
-for(let i = 1; i < WIDE-1; i++) {
-    for(let ii = 1; ii < DEEP-1; ii++) {
-        console.log(i, ii, getScore(i,ii))
-        scoreList.push(getScore(i,ii));
-    }
-}
-
-Math.max(...scoreList)//?
+debugGrid()
