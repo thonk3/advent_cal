@@ -1,13 +1,11 @@
-const { sign } = require('crypto');
-const { FILE } = require('dns');
-const { setMaxIdleHTTPParsers } = require('http');
-const { stripVTControlCharacters } = require('util');
+const { min } = require('mathjs');
+const math = require('mathjs');
 
 const FILEDIR = require('path').resolve(__dirname,'./input')
 const DEMO = require('path').resolve(__dirname,'./demo')
 
 // pass the path of the input file
-const fileReader = require('../FileImport')(DEMO);
+const fileReader = require('../FileImport')(FILEDIR);
 
 // get input as an array of string
 // seperated by new line
@@ -26,7 +24,6 @@ input.forEach(e=> {
     }
 })
 
-console.log(mInput);
 
 /* 
 0   mid
@@ -37,12 +34,9 @@ console.log(mInput);
 5   false
 */
 mInput = mInput.map(e=>{
-    let mID = Number(e[0].split(' ')[1]);
-    let starting = e[1].split(',');
-    let calc = {
-        sym: e[2].split(' ')[0],
-        val: Number(e[2].split(' ')[1]),
-    }
+    let mID = Number(e[0].split(' ')[1])
+    let starting = e[1].split(',')
+    let calc = e[2].trim()
     let testDivisible = Number(e[3])
     let trueThrowTo = Number(e[4].split(' ')[1]);
     let falseThrowTo = Number(e[5].split(' ')[1]);
@@ -54,10 +48,66 @@ mInput = mInput.map(e=>{
         calc,
         testDivisible,
         trueThrowTo,
-        falseThrowTo
+        falseThrowTo,
+        inspect: 0
     }
 })
 
-console.log(mInput);
+console.log(mInput[0]);
 
-console.log(mInput)
+let inspect = []
+let debug = (outFlag) => {
+    mInput.forEach(e => {
+        if(!outFlag) {
+            console.log("Monke", e.mID, e.starting)
+        } else {
+            inspect.push(e.inspect)
+            console.log("Monke", e.mID, e.inspect)
+        }
+    })
+    
+    if(outFlag) {
+        console.log(math.multiply(...inspect.sort((a,b) =>a-b).slice(-2)))//?
+    }
+}
+
+let modulo = 1;
+mInput.forEach(e=> modulo *= e.testDivisible);
+
+let yeetMonke = (monke, monkeList, cycle) => {
+    let {starting, calc, testDivisible, falseThrowTo, trueThrowTo} = monke;
+
+    starting.forEach(item => {
+        monke.inspect++;
+        let iii = doCalc(item, calc);
+
+        if(iii%testDivisible===0) {
+            monkeList[trueThrowTo].starting.push(iii);
+        } else monkeList[falseThrowTo].starting.push(iii);
+    })
+
+    monkeList[monke.mID].starting = [];
+}
+
+let doCalc = (val, calcString) => {
+    let res = math.evaluate(calcString, {old:val})
+    return math.chain(res).mod(modulo).done(); 
+}
+
+
+// yeetMonke(mInput[0], mInput);
+
+for (let i = 0; i < 10000; i++) {
+    mInput.forEach(e=> yeetMonke(e, mInput, i));
+}
+
+debug(true);
+
+
+// for each monkey
+    // for each holding items
+    // item calculate / then divide 3
+    // check divisible
+        // throw
+
+
