@@ -34,6 +34,10 @@ const URL = `https://adventofcode.com/${year}/day/${day}/input`
 // --- if year is this year and not december - throw error and end
 // -- day range is 1 - 25
 
+// TODO: setup npm scripts in package.json
+
+// TODO: set up -A flag 
+
 // handling args to set date to get
 process.argv.forEach((value, index) => {
     if(index > 1 && value[0] === '-'){
