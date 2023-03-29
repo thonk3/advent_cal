@@ -65,7 +65,6 @@ const buildDirPath = (d, y) => {
 }
 
 const handleGetError = (e) => {
-    console.log(e);
     if(e.response.status === 500) {
         console.log("Bad Token try again");
     } else console.log(e);
