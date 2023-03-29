@@ -1,81 +1,97 @@
 
-const KEY = 'YOUR_KEY';
+const axios = require('axios');
+const fs = require('fs');
+
+/* 
+    dumb script to quickly grab AoC input data 
+    
+    TO USE
+    run default - retrieve current day - current year
+    node get.js
+
+    run day and year flags
+    node get.js -y [year] -d [aoc-day]
+
+    run -retrieve input for whole year
+    $ node get.js -A [year]
+*/
+
+const YOUR_KEY = 'your key'
+// get key after login
+// inspect -> cookies -> copy value from session key
 
 const NOW = new Date();
-let year = 2022
-// let year = NOW.getFullYear().toString();
-let day = 5
-// let day = NOW.getDate().toString();
 const IS_DECEMBER = NOW.getMonth() === 11;
+
+let year = NOW.getFullYear();
+let day = NOW.getDate();
+
+const URL = `https://adventofcode.com/${year}/day/${day}/input`
+
+// TODO: handle bad args input
+// -- check if number
+// -- year range is 2015 -> now 
+// --- if year is this year and not december - throw error and end
+// -- day range is 1 - 25
 
 // handling args to set date to get
 process.argv.forEach((value, index) => {
     if(index > 1 && value[0] === '-'){
         switch(value) {
-            case '-a':
-                let i = value[index+1];
-                console.log('print a', i);
+            case '-y':
+                year = process.argv[index+1];
                 break;
-            case '-b':
-                console.log('print another b');
+            case '-d':
+                day = process.argv[index+1];
                 break;
-            case '-c':
+            case '-A': // full year set up
                 console.log('print last c');
                 break;
         }
     }
 });
 
-// print out what year is being retrieved
-// by default get current day input
-
-// if current month is not december ask user to set month and year to retrieve
-
-// PAIN POINTS -----------------------------
-// credentials, for now write a README on how to set your creds later
-
 // HELPERS FUNCTIONS -----------------------
 const dayPad = (d) => {
     return d.toString().length === 1 ? `0${d}` : d;
 }
 
-const buildFilePath = (d, y) => {
-    return `${__dirname}/../${y}/${dayPad(d)}/input`
+const buildDirPath = (d, y) => {
+    return `${__dirname}/../${y}/${dayPad(d)}`
+}
+
+const handleGetError = (e) => {
+    console.log(e);
+    if(e.response.status === 500) {
+        console.log("Bad Token try again");
+    } else console.log(e);
 }
 
 // DO THE THING ----------------------------
 
-const axios = require('axios');
-const fs = require('fs');
+const FILE_PATH = buildDirPath(day, year);
 
-const url = `https://adventofcode.com/${year}/day/${day}/input`
-const session = 'yourToken'
+if(!IS_DECEMBER && NOW.getFullYear() === year) {
+    console.log("ERR - current month is not december, set the day and year to grab input from");
+    return;
+}
 
-// TODO: better handlng bad token error
-// TODO: set day year args
-// TODO: handle bad args input
+console.log("========================================")
+console.log(`Grabbing input file for day${dayPad(day)}-${year}`)
 
-const opt = {
-    headers: { Cookie: `session=${session}` }
-} 
-
-
-let client = axios.create(opt);
-
-client.get(url)
+axios.create({
+    headers: { Cookie: `session=${YOUR_KEY}` }
+}).get(URL)
     .then(res => {
-
-        if(res.status === 200) {
-            fs.writeFileSync(buildFilePath(day, year), res.data);
-            console.log("saved to", buildFilePath(day, year));
+        // check exist folder
+        if(!fs.existsSync(FILE_PATH)){
+            fs.mkdirSync(FILE_PATH);
         }
-        console.log(typeof res.data);
-        console.log(res.status)
-        
-        console.log("eee");
+
+        fs.writeFileSync(FILE_PATH+'/input', res.data);
+        console.log(`Saved input to - ${FILE_PATH}`)
+        console.log("OK glhf");
     })
     // what are the possible errors
-    // status code 500 - bad token
-    .catch(e => console.log(e));
-
-    //TODO: if no dir - create dir
+    // - 500 bad token
+    .catch(handleGetError);
