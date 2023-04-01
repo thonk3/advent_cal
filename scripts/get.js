@@ -98,3 +98,22 @@ axios.create({
     // what are the possible errors
     // - 500 bad token
     .catch(handleGetError);
+
+
+/* 
+    0 - get today - setup day
+        error if not december - and ask for date input
+        start code buffer for the day
+    1 - setup year
+*/
+const runMode = 1;
+
+// DO THE THING 
+switch(runMode){
+    case 1: // get day
+        break;
+    case 1: // get year
+        break;
+    default:
+        console.log("kek ok den");
+}
