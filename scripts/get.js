@@ -84,9 +84,9 @@ const handleGetError = (e) => {
     console.log(e);
     if(e.response.status === 500) {
         console.log("Bad Token try again");
+    }
     if(e.response.status === 404) {
         console.log("Bad URL " + e.response.url);
-    }
     } else console.log(e);
 }
 
@@ -175,9 +175,12 @@ switch(runMode){
         runDay(DAY_PATH, URL);
         break;
     case 1: // setup past year year - require year input - not current year
-        if(year === NOW.getFullYear()) {
-            console("ERR - cannot be current year");
+        if(year.toString() === NOW.getFullYear().toString()) {
+            console.log("ERR - cannot be current year");
         } else {
+            console.log("========================================")
+            console.log(`Starting to setup for year ${year}`)
+
             runMonthLoop();
             console.log(`SUcc - setup for ${year} completed`);
         }
