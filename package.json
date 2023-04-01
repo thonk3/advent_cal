@@ -4,6 +4,8 @@
     "mathjs": "^11.5.0"
   },
   "scripts": {
-    "hello": "echo 'hello'"
+    "get": "node scripts/get.js",
+    "get-year": "node scripts/get.js -A -y",
+    "get-year:2022": "node scripts/get.js -A -y 2022"
   }
 }

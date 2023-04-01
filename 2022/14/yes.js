@@ -1,5 +1,3 @@
-const { Z_ASCII } = require('zlib');
-
 const FILEDIR = require('path').resolve(__dirname,'./input')
 const DEMO = require('path').resolve(__dirname,'./demo')
 

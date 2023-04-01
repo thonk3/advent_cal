@@ -16,7 +16,7 @@ const fs = require('fs');
     $ node get.js -A [year]
 */
 
-const YOUR_KEY = 'your key'
+const YOUR_KEY = ''
 // get key after login
 // inspect -> cookies -> copy value from session key
 
@@ -26,7 +26,7 @@ const IS_DECEMBER = NOW.getMonth() === 11;
 let year = NOW.getFullYear();
 let day = NOW.getDate();
 
-const URL = `https://adventofcode.com/${year}/day/${day}/input`
+let runMode = 0; // default geDay
 
 // TODO: handle bad args input
 // -- check if number
@@ -43,62 +43,90 @@ process.argv.forEach((value, index) => {
     if(index > 1 && value[0] === '-'){
         switch(value) {
             case '-y':
-                year = process.argv[index+1];
+                if(!!process.argv[index+1]) {
+                    year = process.argv[index+1];
+                } else return 1;
                 break;
             case '-d':
-                day = process.argv[index+1];
+                if(!!process.argv[index+1]) {
+                    day = process.argv[index+1];
+                } else return 1;
                 break;
             case '-A': // full year set up
-                console.log('print last c');
+                if(!!process.argv[index+1]) {
+                    year = process.argv[index+1];
+                    runMode = 1;
+                } else return 1;
                 break;
         }
     }
 });
 
 // HELPERS FUNCTIONS -----------------------
+
+
 const dayPad = (d) => {
     return d.toString().length === 1 ? `0${d}` : d;
 }
 
+const buildYearPath = (y) => {
+    return `${__dirname}/../${y}/`
+}
 const buildDirPath = (d, y) => {
-    return `${__dirname}/../${y}/${dayPad(d)}`
+    return `${__dirname}/../${y}/${dayPad(d)}/`
+}
+
+const buildURL = (d, y) => {
+    return `https://adventofcode.com/${y}/day/${d}/input`
 }
 
 const handleGetError = (e) => {
+    console.log(e);
     if(e.response.status === 500) {
         console.log("Bad Token try again");
+    if(e.response.status === 404) {
+        console.log("Bad URL " + e.response.url);
+    }
     } else console.log(e);
 }
 
 // DO THE THING ----------------------------
 
-const FILE_PATH = buildDirPath(day, year);
-
-if(!IS_DECEMBER && NOW.getFullYear() === year) {
-    console.log("ERR - current month is not december, set the day and year to grab input from");
-    return;
+const copyTemplate = (path) => {
+    if(!fs.existsSync(path+'yes.js')) {
+        fs.copyFileSync(
+            __dirname+"/../templates/yes.js", 
+            path+"yes.js"
+        );
+    }
 }
 
-console.log("========================================")
-console.log(`Grabbing input file for day${dayPad(day)}-${year}`)
+const setupYearFolder = (y) => {
+    const yearPath = buildYearPath(y);
+    if(!fs.existsSync(yearPath)) {
+        fs.mkdirSync(yearPath);
+    }
+}
 
-axios.create({
-    headers: { Cookie: `session=${YOUR_KEY}` }
-}).get(URL)
-    .then(res => {
-        // check exist folder
-        if(!fs.existsSync(FILE_PATH)){
-            fs.mkdirSync(FILE_PATH);
-        }
+const setupFolder = (path) => {
+    // check exist folder
+    if(!fs.existsSync(path)){
+        fs.mkdirSync(path);
+    }
+}
 
-        fs.writeFileSync(FILE_PATH+'/input', res.data);
-        console.log(`Saved input to - ${FILE_PATH}`)
-        console.log("OK glhf");
+const HEADERS = { Cookie: `session=${YOUR_KEY}` }
+const axi = axios.create({ headers: HEADERS });
+
+const getInput = (path, url) => {
+    axi.get(url).then(res => {
+        fs.writeFileSync(path+'input', res.data.toString());
+        console.log(`Saved input to - ${path}`);
     })
+    .catch(handleGetError);
     // what are the possible errors
     // - 500 bad token
-    .catch(handleGetError);
-
+}
 
 /* 
     0 - get today - setup day
@@ -106,13 +134,53 @@ axios.create({
         start code buffer for the day
     1 - setup year
 */
-const runMode = 1;
 
 // DO THE THING 
+// safe guard
+// TODO: rethink this
+
+if(!IS_DECEMBER && NOW.getFullYear() === year) {
+    console.log("ERR - current month is not december, set the day and year to grab input from");
+    return;
+}
+
+const runDay = (path, url) => {
+    setupYearFolder(year);
+    setupFolder(path);
+    copyTemplate(path);
+    getInput(path, url);
+}
+
+var monthD = 1;
+const runMonthLoop = () => {
+    setTimeout(() => {
+        const DAY_PATH = buildDirPath(monthD, year); //?
+        const URL = buildURL(monthD, year); //?
+        
+        runDay(DAY_PATH, URL);
+
+        monthD++;
+        if (monthD<26) runMonthLoop();
+    }, 200);
+}
+
 switch(runMode){
-    case 1: // get day
+    case 0: // get day
+        console.log("========================================")
+        console.log(`Grabbing input file for day${dayPad(day)}-${year}`)
+
+        const DAY_PATH = buildDirPath(day, year);
+        const URL = buildURL(day, year);
+
+        runDay(DAY_PATH, URL);
         break;
-    case 1: // get year
+    case 1: // setup past year year - require year input - not current year
+        if(year === NOW.getFullYear()) {
+            console("ERR - cannot be current year");
+        } else {
+            runMonthLoop();
+            console.log(`SUcc - setup for ${year} completed`);
+        }
         break;
     default:
         console.log("kek ok den");
