@@ -6,6 +6,7 @@ module.exports = (FILE) =>
         return fs
             .readFileSync(FILE, 'utf8')
             .split('\n')
-            .map(line => action ? action(line) : line)
-            .map(line => line.replace(/(\r\n|\n|\r)/gm, ""));
+            .map(line => line.replace(/(\r\n|\n|\r)/gm, ""))
+            .map(line => action ? action(line) : line);
     }
+
