@@ -4,7 +4,7 @@ const DEMO = require('path').resolve(__dirname, './demo');
 const MODE = 1
 
 // parsing input from file to array
-const fileReader = require('../scripts/FileImport')(MODE ? INPUT : DEMO);
+const fileReader = require('../../scripts/FileImport')(MODE ? INPUT : DEMO);
 
 // parsing input
 let input = fileReader((e) => {
