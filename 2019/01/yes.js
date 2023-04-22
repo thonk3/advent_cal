@@ -30,11 +30,10 @@ let b
 
     add it all together at the end
 */
+let calcA = (a) => Math.floor(a/3)-2;
+
 let sumA = input
-    .map(e => {
-        // div3 round down
-        return Math.floor(e/3) - 2;
-    })
+    .map(calcA)
     .reduce((a, b) => a+b, 0);
 
 console.log(sumA)
@@ -43,3 +42,13 @@ console.log(sumA)
 /* 
     fuel requires fuel
 */
+let calcB = (a) => {
+    let fuel = calcA(a);
+    return (fuel<0) ? 0 : fuel+calcB(fuel);
+}
+
+let sumB = input
+    .map(calcB)
+    .reduce((a, b) => a+b, 0);
+
+console.log(sumB);
