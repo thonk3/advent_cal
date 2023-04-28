@@ -16,7 +16,7 @@ const fs = require('fs');
     $ node get.js -A [year]
 */
 
-const YOUR_KEY = '53616c7465645f5f20919879223bad59c75edd8b22632e1a21072c7ec6e3502c39be83b1fbfe5017fafa299bfd402c133d2fc242c6c0f601e22048602cf73a74'
+const YOUR_KEY = ''
 // get key after login
 // inspect -> cookies -> copy value from session key
 
