@@ -1,6 +1,7 @@
 
 const axios = require('axios');
 const fs = require('fs');
+require('dotenv').config();
 
 /* 
     dumb script to quickly grab AoC input data 
@@ -16,7 +17,7 @@ const fs = require('fs');
     $ node get.js -A [year]
 */
 
-const YOUR_KEY = ''
+const YOUR_KEY = process.env.KEY
 // get key after login
 // inspect -> cookies -> copy value from session key
 
