@@ -2,12 +2,12 @@ const INPUT = require('path').resolve(__dirname, './input');
 const DEMO = require('path').resolve(__dirname, './demo');
 
 const MODE = 1
-
-// parsing input from file to array
+// string array by 
 const fileReader = require('../../scripts/FileImport')(MODE ? INPUT : DEMO);
 
-// parsing input
 let input = fileReader((e) => {
+    // parsing input
+
     return e
 })
 
