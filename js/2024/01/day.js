@@ -1,5 +1,5 @@
 // template last updated - 29 - 11 - 2024
-const { readInput } = require('../../src/utils/ReadInput');
+const { readInput } = require('../../utils/readInput');
 const INPUT = require('path').resolve(__dirname, './input');
 const DEMO = require('path').resolve(__dirname, './demo');
 
