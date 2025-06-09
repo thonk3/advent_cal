@@ -4,10 +4,6 @@ lets fix some things
 What to do, what to do - a little prep for this year AOC 2024
 - [x] lets re-structure the files for utilities / scripts a little bit
 - some light practice and identify patterns 
-  - [ ] 2022 day1
-  - [ ] 2022 day2
-  - [ ] 2022 day3
-  - [ ] 2022 day4
 - utils patterns / cheat - sheet
   - sort number - asc - desc
 
