@@ -87,13 +87,13 @@ const buildURL = (d, y) => {
 }
 
 const handleGetError = (e) => {
-    console.log(e);
+    console.error(e);
     if(e.response.status === 500) {
-        console.log("Bad Token try again");
+        console.error(">GET ERR: Bad Token try again");
     }
     if(e.response.status === 404) {
-        console.log("Bad URL " + e.response.url);
-    } else console.log(e);
+        console.log(">GET ERR: Bad URL " + e.response.url);
+    } else console.error(e);
 }
 
 // DO THE THING ----------------------------

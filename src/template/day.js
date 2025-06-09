@@ -1,10 +1,10 @@
 // template last updated - 29 - 11 - 2024
 const { readInput } = require('../../src/utils/ReadInput');
-const INPUT = require('path').resolve(__dirname, './input');
-const DEMO = require('path').resolve(__dirname, './demo');
+const path = require('path');
 
 const IS_DEMO = false
-const INPUT_FILE = IS_DEMO ? DEMO : INPUT;
+const INPUT_FILE = IS_DEMO ? 
+    path.resolve(__dirname, './demo') : path.resolve(__dirname, './input');
 
 /* prompt notes
 
