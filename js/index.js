@@ -1,24 +1,23 @@
-import { readInput } from "./utils/readInput.js";
+import * as solutions from './utils/solutionExports.js';
+import { assert } from "./utils/utils.js";
 
+// CODE AND SET PARAMS
+const YEAR = "year2022", DAY = "day1"
+const RUN_A = true, RUN_B = true;
 
-// TEMP ========================================
-import * as day from "./2022/01.js";
-
-// TEMP ========================================
-
-
-// creating path
-
-// run and print to console
-
-// TODO: use unit test to pass using demo data before 
-// TODO: add flag to run part b
+const play = solutions[YEAR][DAY]
 
 // run part A
-const partA = 0;
-console.log("part a:", partA);
-
+if(RUN_A) {
+  console.log(`${YEAR}-${DAY}-partA`);
+  if(assert(play.solutionA(true), play.DEMO_A_EXPECTED))
+    console.log(">\t", play.solutionA());
+}
 
 // run part B
-const partB = 0;
-console.log("part b:", partB);
+if(RUN_B) {
+  console.log(`${YEAR}-${DAY}-partB`);
+  if(assert(play.solutionB(true), play.DEMO_B_EXPECTED))
+    console.log(">\t", play.solutionB());
+}
+
