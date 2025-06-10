@@ -1,14 +1,18 @@
 // template last updated - 29 - 11 - 2024
 import path from "path";
-import { readInput } from "../utils/utils.js";
-
 import { fileURLToPath } from 'url';
 
+import { readInput } from "../utils/utils.js";
+
+// jank repeated path resolve code
+const DAY = 1;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const INPUT = path.resolve(__dirname, "./inputs/input_1");
-const DEMO = path.resolve(__dirname, "./inputs/demo_1");
+const INPUT = path.resolve(__dirname, `./inputs/input_${DAY}`);
+const DEMO = path.resolve(__dirname, `./inputs/demo_${DAY}`);
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // move the path parsing to utils
 export const DEMO_A_EXPECTED = 24000;
@@ -43,7 +47,7 @@ export const solutionB = (IS_DEMO = false) => {
 
   return input.sort((a, b) => b - a).slice(0, 3).reduce((a, b) => a + b);
 }
-// can I tidy this up and make it faster
-// api concept
+
+// TODO: api concept
 // api.sumbit1(false);
 // api.go1(PART_ONE); only logs if submit is true - default to false
